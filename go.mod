@@ -3,7 +3,7 @@ module mynewt.apache.org/newtmgr
 go 1.12
 
 require (
-	github.com/JuulLabs-OSS/ble v0.0.0-20200716215611-d4fcc9d598bb
+	github.com/rigado/ble v0.6.6
 	github.com/JuulLabs-OSS/cbgo v0.0.1
 	github.com/abiosoft/ishell v2.0.0+incompatible // indirect
 	github.com/abiosoft/readline v0.0.0-20180607040430-155bce2042db // indirect
@@ -43,3 +43,5 @@ require (
 	gopkg.in/yaml.v2 v2.2.4 // indirect
 	mynewt.apache.org/newt v0.0.0-20200409145402-c5d1e422bfa3
 )
+
+replace github.com/rigado/ble => ../ble

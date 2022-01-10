@@ -23,9 +23,11 @@ package bll
 
 import (
 	"fmt"
+	"path/filepath"
 
-	"github.com/JuulLabs-OSS/ble"
-	"github.com/JuulLabs-OSS/ble/examples/lib/dev"
+	"github.com/rigado/ble"
+	"github.com/rigado/ble/examples/lib/dev"
+	bonds "github.com/rigado/ble/linux/hci/bond"
 	"mynewt.apache.org/newtmgr/nmxact/bledefs"
 	"mynewt.apache.org/newtmgr/nmxact/sesn"
 )
@@ -63,7 +65,10 @@ func (bx *BllXport) BuildBllSesn(cfg BllSesnCfg) (sesn.Sesn, error) {
 }
 
 func (bx *BllXport) Start() error {
-	d, err := dev.NewDevice(bx.cfg.CtlrName, ble.OptDeviceID(bx.hciIdx))
+	bondFilePath := filepath.Join("bonds.json")
+	bm := bonds.NewBondManager(bondFilePath)
+	optSecurity := ble.OptEnableSecurity(bm)
+	d, err := dev.NewDevice(bx.cfg.CtlrName, ble.OptDeviceID(bx.hciIdx), optSecurity)
 	if err != nil {
 		return fmt.Errorf("[hci%d]: %s", bx.hciIdx, err)
 	}

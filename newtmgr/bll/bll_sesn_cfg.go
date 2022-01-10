@@ -24,7 +24,7 @@ package bll
 import (
 	"time"
 
-	"github.com/JuulLabs-OSS/ble"
+	"github.com/rigado/ble"
 
 	"mynewt.apache.org/newtmgr/nmxact/nmcoap"
 	"mynewt.apache.org/newtmgr/nmxact/sesn"
@@ -39,6 +39,7 @@ type BllSesnCfg struct {
 	WriteRsp     bool
 	TxFilter     nmcoap.TxMsgFilter
 	RxFilter     nmcoap.RxMsgFilter
+	Passkey	     int
 }
 
 func NewBllSesnCfg() BllSesnCfg {

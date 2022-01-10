@@ -27,7 +27,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/JuulLabs-OSS/ble"
+	"github.com/rigado/ble"
 
 	"mynewt.apache.org/newt/util"
 	"mynewt.apache.org/newtmgr/newtmgr/bll"
@@ -40,6 +40,7 @@ type BllConfig struct {
 	OwnAddrType bledefs.BleAddrType
 	PeerId      string
 	PeerName    string
+	Passkey     int
 
 	// Connection timeout, in seconds.
 	ConnTimeout float64
@@ -95,7 +96,12 @@ func ParseBllConnString(cs string) (*BllConfig, error) {
 			if err != nil {
 				return nil, einvalBleConnString("Invalid conn_timeout: %s", v)
 			}
-
+		case "passkey":
+			var err error
+			bc.Passkey, err = strconv.Atoi(v)
+			if err != nil {
+				return nil, einvalBleConnString("Invalid passkey: %s", v)
+			}
 		default:
 			return nil, einvalBllConnString("Unrecognized key: %s", k)
 		}
@@ -127,6 +133,7 @@ func BuildBllSesnCfg(bc *BllConfig) (bll.BllSesnCfg, error) {
 
 	sc.WriteRsp = nmutil.BleWriteRsp
 	sc.ConnTimeout = time.Duration(bc.ConnTimeout*1000000000) * time.Nanosecond
+	sc.Passkey = bc.Passkey
 
 	return sc, nil
 }
